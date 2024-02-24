@@ -75,87 +75,85 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        // color: Theme.of(context).colorScheme.primary,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: PageView(
-                    controller: _pageController,
-                    onPageChanged: _handlePageChange,
-                    children: pageViewItems,
+      body: SafeArea(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          // color: Theme.of(context).colorScheme.primary,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: PageView(
+                      controller: _pageController,
+                      onPageChanged: _handlePageChange,
+                      children: pageViewItems,
+                    ),
                   ),
-                ),
-                Expanded(
-                    child: Column(
-                  children: [
-                    // progress indicator
+                  Expanded(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // progress indicator
 
-                    TweenAnimationBuilder(
-                      tween: Tween<double>(
-                        begin: _progressController.value,
-                        end: _progressController.value,
+                      Stack(
+                        children: [
+                          Container(
+                            height: 10,
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.grey,
+                          ),
+                          AnimatedContainer(
+                            curve: Curves.easeIn,
+                            duration: const Duration(milliseconds: 300),
+                            height: 10,
+                            color: Colors.blue,
+                            width: MediaQuery.of(context).size.width *
+                                (_progressController.value),
+                          ),
+                        ],
                       ),
-                      duration: const Duration(milliseconds: 300),
-                      builder:
-                          (BuildContext context, Object? value, Widget? child) {
-                        return LinearProgressIndicator(
-                          value: _progressController.value,
-                          minHeight: 10,
-                          backgroundColor: Colors.grey[200],
-                          valueColor:
-                              const AlwaysStoppedAnimation<Color>(Colors.blue),
-                        );
-                      },
-                      child: LinearProgressIndicator(
-                        minHeight: 10,
-                        backgroundColor: Colors.grey[200],
-                        valueColor:
-                            const AlwaysStoppedAnimation<Color>(Colors.blue),
-                      ),
-                    ),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        // previous and next buttons
-                        ElevatedButton(
-                            onPressed: () => _handlePageChange(
-                                  _pageController.page!.round() + -1,
-                                ),
-                            child: const Text("Previous")),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              _handlePageChange(
-                                _pageController.page!.round() + 1,
-                              );
-                            },
-                            child: const Text("Next")),
-                      ],
-                    ),
-                  ],
-                )),
-              ],
-            ),
-            AnimatedPositioned(
-              left: MediaQuery.of(context).size.width *
-                  (_progressController.value - 0.1),
-              top: MediaQuery.of(context).size.height * 0.66,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeIn,
-              child: const Text('car'),
-            )
-          ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // previous and next buttons
+                          ElevatedButton(
+                              onPressed: () => _handlePageChange(
+                                    _pageController.page!.round() - 1,
+                                  ),
+                              child: const Text("Previous")),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                _handlePageChange(
+                                  _pageController.page!.round() + 1,
+                                );
+                              },
+                              child: const Text("Next")),
+                        ],
+                      ),
+                    ],
+                  )),
+                ],
+              ),
+              AnimatedPositioned(
+                left: MediaQuery.of(context).size.width *
+                    (_progressController.value - 0.1),
+                top: MediaQuery.of(context).size.height * 0.72,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn,
+                child: const Text('car'),
+              )
+            ],
+          ),
         ),
       ),
     );
